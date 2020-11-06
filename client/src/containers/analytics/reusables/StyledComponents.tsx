@@ -12,10 +12,13 @@ export const Frame=styled.div`
     min-height:200px;
     width:fit-content;
     position:relative;
+    margin:10px;
 `
 
 export const FrameHeader=styled.div<FrameHeaderProps>`
     border-radius:3px 0px;
+    box-sizing:border-box;
+    padding: 0px 20px;
     background-color:${props=>props.color};
     color:${props=>props.textColor?props.textColor:'white'};
     font-size:36px;
@@ -34,6 +37,7 @@ export const FilterBoard=styled.div`
     display: flex;
     justify-content:flex-start;
     height:35px;
+    padding: 5px 20px;
 `
 
 export const SizeController=styled.div`

@@ -10,20 +10,13 @@ const EventLogsTile:React.FC=()=>{
         fetch(`http://localhost:3001/events/all-filtered?offset=${ammount}`)
         .then(res=>res.json())
         .then(res=>setData(res))
-        // setData(data=>{
-        //   let usedata=[...data.events]
-        //   while (usedata.length<ammount){
-        //     usedata=usedata.concat(mockGeo)
-        //   }
-        //   return {more:true,events:usedata}
-        // });
       }, [ammount]);
     
       const fetchData=():void=>{
         if (data.more) setAmmount(ammount+10)
       }
     return(
-        <IntuitiveTile color="teal" tileName="Events Log">
+        <IntuitiveTile color="teal" tileName="Events Log" loading={data.events.length===0}>
             <EventLogs width={800} height={400}/>
         </IntuitiveTile>
     )

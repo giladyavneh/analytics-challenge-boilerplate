@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { weeklyRetentionObject } from "../../../models/event";
 import {
   GrayTile,
@@ -11,6 +11,7 @@ interface RetentionProps {
   height:number;
   width:number
 }
+
 
 const Retention: React.FC<RetentionProps> = ({ data, height, width }) => {
   return (

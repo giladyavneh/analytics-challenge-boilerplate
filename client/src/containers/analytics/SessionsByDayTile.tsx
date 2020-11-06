@@ -11,47 +11,21 @@ import {
 } from "recharts";
 import IntuitiveTile from "./reusables/IntuitiveTile";
 
-type SessionsByDayTileProps= {
+export type SessionsByDayTileProps= {
    date: string, count: number 
 }[]
-let mockLine=[
-    {
-      date: "24/10/2020",
-      count: 12
-    }, 
-    {
-      date: "25/10/2020",
-      count: 43
-    }, 
-    {
-      date: "26/10/2020",
-      count: 7
-    }, 
-    {
-      date: "27/10/2020",
-      count: 12
-    }, 
-    {
-      date: "28/10/2020",
-      count: 43
-    }, 
-    {
-      date: "29/10/2020",
-      count: 7
-    }, 
-    {
-      date: "30/10/2020",
-      count: 78
-    }, 
-  ]
+
   
 const SessionsByDayTile: React.FC = () => {
-    const [data, setData]=useState<SessionsByDayTileProps>()
+    const [data, setData]=useState<SessionsByDayTileProps>([])
     useEffect(()=>{
-        setData(mockLine) 
+      fetch('http://localhost:3001/events/by-days/7')
+      .then(res=>res.json())
+      .then(res=>setData(res))
+        
     },[])
   return (
-    <IntuitiveTile color="teal" tileName="Tile">
+    <IntuitiveTile color="teal" filters={{weekEnd:"date", 'Key Word':"search", Event:"type", Browser:"browser"}} tileName="Traffic by days" loading={data.length===0}>
       <LineChart
         width={730}
         height={250}
