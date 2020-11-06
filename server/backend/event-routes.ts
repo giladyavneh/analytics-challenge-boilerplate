@@ -16,6 +16,7 @@ import {
   userFieldsValidator,
   isUserValidator,
 } from "./validators";
+import { query } from "express-validator";
 const router = express.Router();
 
 // Routes
@@ -33,7 +34,7 @@ function getAllEvents(query?: Filter): { more: boolean; events: Event[] } | Even
   let more = false;
   let events = db.get("events").value();
   if (query) {
-    if (Object.keys(query).some((val) => ["type", "browser", "search"].includes(val))) {
+    if (Object.keys(query).some((val) => ["type", "browser", "search","offset"].includes(val))) {
       let newRes = [];
       for (let i = 0; i < events.length; i++) {
         if (query.offset && Number(query.offset) === newRes.length) {
@@ -147,6 +148,7 @@ router.get("/all", (req: Request, res: Response) => {
 });
 
 router.get("/all-filtered", (req: Request, res: Response) => {
+  console.log(req.query)
   res.send(getAllEvents(req.query));
 });
 
