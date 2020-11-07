@@ -17,16 +17,18 @@ dotenv.config()
 
 
 function AnalyticPage() {
-  return (
+  return (<>
+  <h1>Analytics</h1>
     <div  style={{display:"flex", flexWrap:'wrap'}}>
-      <h1>Analytics</h1>
-      {/* <SessionsByDayTile/>
+      
+      <SessionsByDayTile/>
       <SessionsByHoursTile/>
       <GeoLocationTile/>
       <RetentionTile/>
-      <EventLogsTile/> */}
+      <EventLogsTile/>
       <BrowsersPieTile/>
     </div>
+    </>
   );
 }
 
