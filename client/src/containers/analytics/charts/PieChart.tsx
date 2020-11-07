@@ -70,10 +70,10 @@ const ChartPie: React.FC<PieProps> = ({ height, width, data }) => {
     let index: number = 0;
     let startAngle: number = 0;
     let total = data.reduce((a, b) => {
-      return { label: "total", number: a.number + b.number };
-    }).number;
+      return { name: "total", count: a.count + b.count };
+    }).count;
     while (index < data.length) {
-      let prec = (data[index].number / total) * 100;
+      let prec = (data[index].count / total) * 100;
       let color=Colors[
         index %
           Object.keys(Colors).filter((key) => Number.isNaN(Number(key)))
@@ -86,7 +86,7 @@ const ChartPie: React.FC<PieProps> = ({ height, width, data }) => {
         color
       );
       sectors.push([
-        data[index].label,
+        data[index].name,
         {
           center: { x: size / 2, y: size / 2 },
           radius: size / 2,
@@ -134,7 +134,7 @@ const ChartPie: React.FC<PieProps> = ({ height, width, data }) => {
         setContext({
           top:e.clientY,
           left:e.clientX,
-          text:`${sectors[i][0]}:${data.find((obj) => obj.label === sectors[i][0])?.number}`
+          text:`${sectors[i][0]}:${data.find((obj) => obj.name === sectors[i][0])?.count}`
         })
         
         return;
