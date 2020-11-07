@@ -12,6 +12,7 @@ import RetentionTile from './RetentionTile';
 import EventLog from './reusables/EventLog';
 import EventLogs from './charts/EventLogs';
 import EventLogsTile from './EventLogsTiles';
+import BrowsersPieTile from './BrowsersPieTile';
 dotenv.config()
 
 
@@ -19,11 +20,12 @@ function AnalyticPage() {
   return (
     <div  style={{display:"flex", flexWrap:'wrap'}}>
       <h1>Analytics</h1>
-      <SessionsByDayTile/>
+      {/* <SessionsByDayTile/>
       <SessionsByHoursTile/>
       <GeoLocationTile/>
       <RetentionTile/>
-      <EventLogsTile/>
+      <EventLogsTile/> */}
+      <BrowsersPieTile/>
     </div>
   );
 }
