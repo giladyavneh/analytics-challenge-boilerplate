@@ -16,12 +16,13 @@ import {
   userFieldsValidator,
   isUserValidator,
 } from "./validators";
+import { query } from "express-validator";
 const router = express.Router();
 
 // Routes
 
 interface Filter {
-  sorting: string;
+  sorting?: string;
   type?: eventName;
   browser?: browser;
   search?: string;
@@ -33,7 +34,7 @@ function getAllEvents(query?: Filter): { more: boolean; events: Event[] } | Even
   let more = false;
   let events = db.get("events").value();
   if (query) {
-    if (Object.keys(query).some((val) => ["type", "browser", "search"].includes(val))) {
+    if (Object.keys(query).some((val) => ["type", "browser", "search","offset"].includes(val))) {
       let newRes = [];
       for (let i = 0; i < events.length; i++) {
         if (query.offset && Number(query.offset) === newRes.length) {
@@ -147,6 +148,7 @@ router.get("/all", (req: Request, res: Response) => {
 });
 
 router.get("/all-filtered", (req: Request, res: Response) => {
+  console.log(req.query)
   res.send(getAllEvents(req.query));
 });
 
@@ -239,6 +241,17 @@ router.get("/retention", (req: Request, res: Response) => {
 
   res.send(getRetentionCohort(Number(dayZero)));
 });
+
+router.get("/browser", (req: Request, res: Response) => {
+  const events=getAllEvents()
+  let answer:{[index:string]:number}={chrome:0, safari:0, edge:0, firefox:0, ie:0, other:0}
+  events.forEach(event=>answer[event.browser]++)
+  let result=[]
+  for (let brows in answer){
+    result.push({name:brows,count:answer[brows]})
+  } 
+  res.send(result);
+});
 router.get("/:eventId", (req: Request, res: Response) => {
   res.send("/:eventId");
 });
@@ -249,6 +262,8 @@ router.post("/", (req: Request, res: Response) => {
   }
   res.send({ seccess: true });
 });
+
+
 
 router.get("/chart/os/:time", (req: Request, res: Response) => {
   res.send("/chart/os/:time");
