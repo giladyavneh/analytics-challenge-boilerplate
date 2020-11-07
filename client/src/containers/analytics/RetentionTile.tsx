@@ -22,7 +22,7 @@ const RetentionTile:React.FC = () => {
     }
     return (    
     <IntuitiveTile color="teal" filters={{'Zero Day':'date'}} filterFunctions={{'Zero Day':setZero}} tileName="Weekly Retention" loading={data.length===0}>
-      {data.length}
+      {/* {data.length} */}
       <Retention height={800} width={400} data={data} />
     </IntuitiveTile>
   );
