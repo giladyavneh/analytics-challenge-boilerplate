@@ -3,6 +3,10 @@ import ErrorBoundary from "../ErrorBoundries";
 import { FilterBoard, Frame, FrameHeader, SizeController } from "./StyledComponents";
 import { eventName, os } from "../../../models/event";
 
+export const hour = 1000 * 60 * 60;
+export const day = hour * 24;
+export const week = day * 7;
+
 type filterTypes = "date" | "search" | "browser" | "type";
 
 interface IntuitiveTileProps {
@@ -10,6 +14,8 @@ interface IntuitiveTileProps {
   tileName: string;
   loading: boolean;
   filters?: { [index: string]: filterTypes };
+  filterFunctions?:{ [index: string]: (param:string)=>void };
+  rerender?:boolean
 }
 
 const IntuitiveTile: React.FC<IntuitiveTileProps> = ({
@@ -18,12 +24,12 @@ const IntuitiveTile: React.FC<IntuitiveTileProps> = ({
   children,
   loading,
   filters = {},
+  filterFunctions
 }) => {
   const [height, setHeight] = useState<number>(400);
   const [width, setWidth] = useState<number>(800);
   const [chart, setChart] = useState<React.ReactElement[] | null | undefined>([]);
   const Self: React.RefObject<HTMLDivElement> = useRef(null);
-  const [params, setParams]=useState()
   useEffect(() => {
     const childrenWithProps = React.Children.map(children, (child) => {
       const props = { height: height - 80, width };
@@ -58,20 +64,32 @@ const IntuitiveTile: React.FC<IntuitiveTileProps> = ({
               case "date":
                 return (
                   <label>
-                    {filter}{" "} <input type="date" />
+                    {filter}{" "} <input type="date" onChange={({target})=>{
+                    if (filterFunctions){
+                      if (filterFunctions[filter]) filterFunctions[filter](target.value.toString())
+                    }
+                  }}/>
                   </label>
                 );
               case "search":
                 return (
                   <label>
-                    {filter}{" "}<input />
+                    {filter}{" "}<input style={{width:'80px'}} onChange={({target})=>{
+                    if (filterFunctions){
+                      if (filterFunctions[filter]) filterFunctions[filter](target.value)
+                    }
+                  }}/>
                   </label>
                 );
               case "type":
                 return (
                   <label>
                     {filter}{" "}
-                    <select>
+                    <select onChange={({target})=>{
+                    if (filterFunctions){
+                      if (filterFunctions[filter]) filterFunctions[filter](target.value)
+                    }
+                  }}>
                     <option></option>
                       <option>login</option>
                       <option>signup</option>
@@ -82,14 +100,17 @@ const IntuitiveTile: React.FC<IntuitiveTileProps> = ({
                 case "browser":
                     return <label>
                     {filter}{" "}
-                    <select>
+                    <select onChange={({target})=>{
+                    if (filterFunctions){
+                      if (filterFunctions[filter]) filterFunctions[filter](target.value)
+                    }
+                  }}>
                     <option></option>
-
-                      <option>windows</option>
-                      <option>mac</option>
-                      <option>linux</option>
-                      <option>ios</option>
-                      <option>android</option>
+                      <option>chrome</option>
+                      <option>safari</option>
+                      <option>edge</option>
+                      <option>firefox</option>
+                      <option>ie</option>
                       <option>other</option>
                     </select>
                   </label>

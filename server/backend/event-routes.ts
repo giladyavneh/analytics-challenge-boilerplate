@@ -22,7 +22,7 @@ const router = express.Router();
 // Routes
 
 interface Filter {
-  sorting: string;
+  sorting?: string;
   type?: eventName;
   browser?: browser;
   search?: string;

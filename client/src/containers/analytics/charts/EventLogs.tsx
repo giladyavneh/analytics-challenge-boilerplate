@@ -2,19 +2,25 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { EventLogsWrapper } from "../reusables/StyledComponents";
 import { Event } from "../../../models/event";
 import EventLog from "../reusables/EventLog";
+import { Filter } from "../EventLogsTiles";
 
 
 interface EventLogs {
   height: number;
   width: number;
+  params:Filter;
+  // fetchData:()=>void
 }
 
-const EventLogs: React.FC<EventLogs> = ({ height, width }) => {
-  const [ammount, setAmmount] = useState<number>(10);
+
+
+const EventLogs: React.FC<EventLogs> = ({ height, width, params }) => {
+  const [paramaters, setParamaters] = useState<Filter>(params);
   const [data, setData] = useState<{more:boolean,events:Event[]}>({more:true,events:[]});
   
   useEffect(() => {
-    fetch(`http://localhost:3001/events/all-filtered?offset=${ammount}`)
+    let query=Object.keys(paramaters).map((key)=>`${key}=${paramaters[key as keyof Filter]}`).join('&')
+    fetch(`http://localhost:3001/events/all-filtered?${query}`)
     .then(res=>res.json())
     .then(res=>setData(res))
     // setData(data=>{
@@ -24,10 +30,14 @@ const EventLogs: React.FC<EventLogs> = ({ height, width }) => {
     //   }
     //   return {more:true,events:usedata}
     // });
-  }, [ammount]);
+  }, [paramaters]);
 
   const fetchData=():void=>{
-    if (data.more) setAmmount(ammount+10)
+    if (data.more) setParamaters(oldParms=>{
+      let newParams={...oldParms}
+      newParams.offset+=10
+      return newParams
+    })
   }
 
   return (

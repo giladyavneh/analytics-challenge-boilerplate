@@ -18,6 +18,7 @@ dotenv.config()
 function AnalyticPage() {
   return (
     <div  style={{display:"flex", flexWrap:'wrap'}}>
+      <h1>Analytics</h1>
       <SessionsByDayTile/>
       <SessionsByHoursTile/>
       <GeoLocationTile/>
